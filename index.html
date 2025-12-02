@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Promoção Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #1e1e1e;
+            --bg-hover: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #7c3aed;
+            --accent-light: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --whatsapp: #25d366;
+            --instagram: #e1306c;
+            --border: #333;
+            --radius: 16px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            line-height: 1.5;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-badge {
+            background: var(--bg-secondary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Main Container */
+        .main-container {
+            padding: 16px;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .nav-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .nav-tab.active {
+            background: var(--accent);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--accent);
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .checkbox-input {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            accent-color: var(--success);
+        }
+
+        .checkbox-label {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 16px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        /* Participants List */
+        .participants-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .participant-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .participant-card:active {
+            background: var(--bg-hover);
+        }
+
+        .participant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .participant-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .participant-instagram {
+            color: var(--instagram);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-inactive {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .contact-button {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .whatsapp-button {
+            background: rgba(37, 211, 102, 0.1);
+            color: var(--whatsapp);
+        }
+
+        .whatsapp-button:active {
+            background: rgba(37, 211, 102, 0.2);
+        }
+
+        .instagram-button {
+            background: rgba(225, 48, 108, 0.1);
+            color: var(--instagram);
+        }
+
+        .instagram-button:active {
+            background: rgba(225, 48, 108, 0.2);
+        }
+
+        .contact-icon {
+            font-size: 1.25rem;
+        }
+
+        .participant-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-button:active {
+            transform: scale(0.95);
+        }
+
+        .edit-button {
+            color: var(--accent);
+        }
+
+        .delete-button {
+            color: var(--danger);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .empty-icon {
+            font-size: 3.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .empty-title {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Floating Action Button */
+        .fab-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .fab:active {
+            transform: scale(0.9);
+            box-shadow: 0 3px 15px rgba(124, 58, 237, 0.6);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-around;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Utility */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-16 {
+            margin-top: 16px;
+        }
+
+        .mb-16 {
+            margin-bottom: 16px;
+        }
+
+        /* Swipe Hint */
+        .swipe-hint {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            padding: 12px;
+            margin-top: 20px;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <h1 class="app-title">Promoção</h1>
+            <div class="stats-badge">
+                <i class="fas fa-users"></i>
+                <span id="totalCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="form">
+                <i class="fas fa-user-plus"></i> Novo
+            </button>
+            <button class="nav-tab" data-tab="list">
+                <i class="fas fa-list"></i> Participantes
+            </button>
+            <button class="nav-tab" data-tab="stats">
+                <i class="fas fa-chart-bar"></i> Estatísticas
+            </button>
+        </div>
+
+        <!-- Form Tab -->
+        <div id="form-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h2 class="card-title">Adicionar Participante</h2>
+                </div>
+
+                <form id="participant-form">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Nome completo</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="name" class="form-input" placeholder="Digite o nome" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="phone">WhatsApp</label>
+                        <div class="input-wrapper">
+                            <input type="tel" id="phone" class="form-input" placeholder="(11) 99999-9999" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="instagram">Instagram</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="instagram" class="form-input" placeholder="@usuário" required>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="reposted" class="checkbox-input">
+                        <label for="reposted" class="checkbox-label">Republicou nosso post</label>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Salvar Participante
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- List Tab -->
+        <div id="list-tab" class="tab-content hidden">
+            <div class="participants-list" id="participants-list">
+                <!-- Participants will be loaded here -->
+            </div>
+
+            <div id="empty-list" class="empty-state hidden">
+                <div class="empty-icon">
+                    <i class="fas fa-users-slash"></i>
+                </div>
+                <h3 class="empty-title">Nenhum participante</h3>
+                <p class="empty-text">Adicione participantes usando o formulário</p>
+                <button class="btn-secondary mt-16" onclick="switchTab('form')">
+                    <i class="fas fa-plus"></i> Adicionar Primeiro Participante
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Tab -->
+        <div id="stats-tab" class="tab-content hidden">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h2 class="card-title">Estatísticas da Promoção</h2>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-total">0</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-reposted">0</div>
+                        <div class="stat-label">Republicaram</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-engagement">0%</div>
+                        <div class="stat-label">Engajamento</div>
+                    </div>
+                </div>
+
+                <button class="btn-secondary mt-16" onclick="exportData()">
+                    <i class="fas fa-file-export"></i> Exportar Dados
+                </button>
+            </div>
+        </div>
+
+        <div class="swipe-hint">
+            <i class="fas fa-arrow-left"></i> Deslize entre as abas <i class="fas fa-arrow-right"></i>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" data-tab="form">
+            <i class="fas fa-plus-circle nav-icon"></i>
+            <span class="nav-label">Novo</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="list">
+            <i class="fas fa-users nav-icon"></i>
+            <span class="nav-label">Lista</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="stats">
+            <i class="fas fa-chart-bar nav-icon"></i>
+            <span class="nav-label">Estatísticas</span>
+        </a>
+    </nav>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Editar Participante</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="edit-form">
+                <input type="hidden" id="edit-index">
+                <div class="form-group">
+                    <label class="form-label" for="edit-name">Nome completo</label>
+                    <input type="text" id="edit-name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="edit-phone">WhatsApp</label>
+                    <input type="tel" id="edit-phone" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="edit-instagram">Instagram</label>
+                    <input type="text" id="edit-instagram" class="form-input" required>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="edit-reposted" class="checkbox-input">
+                    <label for="edit-reposted" class="checkbox-label">Republicou nosso post</label>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i> Atualizar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Gerenciamento de estado
+        let participants = JSON.parse(localStorage.getItem('promotion_participants')) || [];
+        let currentEditIndex = null;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            renderParticipants();
+            setupEventListeners();
+            setupSwipe();
+        });
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Form submission
+            document.getElementById('participant-form').addEventListener('submit', saveParticipant);
+            document.getElementById('edit-form').addEventListener('submit', updateParticipant);
+
+            // Tab switching
+            document.querySelectorAll('.nav-tab, .nav-item').forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabId = this.dataset.tab;
+                    switchTab(tabId);
+                });
+            });
+
+            // Phone mask
+            document.getElementById('phone').addEventListener('input', formatPhone);
+            document.getElementById('edit-phone').addEventListener('input', formatPhone);
+
+            // Instagram formatting
+            document.getElementById('instagram').addEventListener('blur', formatInstagram);
+            document.getElementById('edit-instagram').addEventListener('blur', formatInstagram);
+        }
+
+        // Swipe gestures for mobile
+        function setupSwipe() {
+            let startX = 0;
+            let endX = 0;
+            const container = document.querySelector('.main-container');
+
+            container.addEventListener('touchstart', e => {
+                startX = e.touches[0].clientX;
+            });
+
+            container.addEventListener('touchend', e => {
+                endX = e.changedTouches[0].clientX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                const diff = startX - endX;
+                const minSwipe = 50;
+
+                if (Math.abs(diff) > minSwipe) {
+                    const tabs = ['form', 'list', 'stats'];
+                    const currentTab = document.querySelector('.nav-tab.active').dataset.tab;
+                    const currentIndex = tabs.indexOf(currentTab);
+
+                    if (diff > 0 && currentIndex < tabs.length - 1) {
+                        // Swipe left
+                        switchTab(tabs[currentIndex + 1]);
+                    } else if (diff < 0 && currentIndex > 0) {
+                        // Swipe right
+                        switchTab(tabs[currentIndex - 1]);
+                    }
+                }
+            }
+        }
+
+        // Tab switching
+        function switchTab(tabId) {
+            // Update tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === tabId);
+            });
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.tab === tabId);
+            });
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.toggle('hidden', content.id !== `${tabId}-tab`);
+            });
+
+            // Update stats if needed
+            if (tabId === 'stats') {
+                updateStats();
+            }
+        }
+
+        // Save new participant
+        function saveParticipant(e) {
+            e.preventDefault();
+
+            const participant = {
+                name: document.getElementById('name').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                instagram: document.getElementById('instagram').value.trim(),
+                reposted: document.getElementById('reposted').checked,
+                date: new Date().toISOString()
+            };
+
+            // Format Instagram
+            if (!participant.instagram.startsWith('@')) {
+                participant.instagram = '@' + participant.instagram;
+            }
+
+            participants.push(participant);
+            saveToStorage();
+            renderParticipants();
+            updateStats();
+            resetForm();
+
+            // Show success feedback
+            showToast('Participante adicionado!');
+        }
+
+        // Update existing participant
+        function updateParticipant(e) {
+            e.preventDefault();
+
+            if (currentEditIndex === null) return;
+
+            participants[currentEditIndex] = {
+                name: document.getElementById('edit-name').value.trim(),
+                phone: document.getElementById('edit-phone').value.trim(),
+                instagram: document.getElementById('edit-instagram').value.trim(),
+                reposted: document.getElementById('edit-reposted').checked,
+                date: participants[currentEditIndex].date
+            };
+
+            saveToStorage();
+            renderParticipants();
+            updateStats();
+            closeModal();
+
+            showToast('Participante atualizado!');
+        }
+
+        // Render participants list
+        function renderParticipants() {
+            const container = document.getElementById('participants-list');
+            const emptyState = document.getElementById('empty-list');
+
+            container.innerHTML = '';
+
+            if (participants.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            participants.forEach((participant, index) => {
+                const participantElement = document.createElement('div');
+                participantElement.className = 'participant-card animate-in';
+                participantElement.style.animationDelay = `${index * 0.05}s`;
+
+                const whatsappLink = `https://wa.me/55${participant.phone.replace(/\D/g, '')}`;
+                const instagramLink = `https://instagram.com/${participant.instagram.replace('@', '')}`;
+
+                participantElement.innerHTML = `
+                    <div class="participant-header">
+                        <div>
+                            <div class="participant-name">${participant.name}</div>
+                            <a href="${instagramLink}" target="_blank" class="participant-instagram">
+                                <i class="fab fa-instagram"></i> ${participant.instagram}
+                            </a>
+                        </div>
+                        <span class="status-badge ${participant.reposted ? 'status-active' : 'status-inactive'}">
+                            ${participant.reposted ? '✓ Republicou' : 'Não republicou'}
+                        </span>
+                    </div>
+
+                    <div class="contact-info">
+                        <a href="${whatsappLink}" target="_blank" class="contact-button whatsapp-button">
+                            <i class="fab fa-whatsapp contact-icon"></i>
+                            <span>${formatPhoneDisplay(participant.phone)}</span>
+                        </a>
+                        <a href="${instagramLink}" target="_blank" class="contact-button instagram-button">
+                            <i class="fab fa-instagram contact-icon"></i>
+                            <span>Ver perfil no Instagram</span>
+                        </a>
+                    </div>
+
+                    <div class="participant-actions">
+                        <button class="action-button edit-button" onclick="openEditModal(${index})">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="action-button delete-button" onclick="deleteParticipant(${index})">
+                            <i class="fas fa-trash"></i> Excluir
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(participantElement);
+            });
+        }
+
+        // Open edit modal
+        function openEditModal(index) {
+            const participant = participants[index];
+            currentEditIndex = index;
+
+            document.getElementById('edit-index').value = index;
+            document.getElementById('edit-name').value = participant.name;
+            document.getElementById('edit-phone').value = participant.phone;
+            document.getElementById('edit-instagram').value = participant.instagram;
+            document.getElementById('edit-reposted').checked = participant.reposted;
+
+            document.getElementById('edit-modal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+            currentEditIndex = null;
+        }
+
+        // Delete participant
+        function deleteParticipant(index) {
+            if (confirm('Tem certeza que deseja excluir este participante?')) {
+                participants.splice(index, 1);
+                saveToStorage();
+                renderParticipants();
+                updateStats();
+                showToast('Participante excluído!');
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = participants.length;
+            const reposted = participants.filter(p => p.reposted).length;
+            const engagement = total > 0 ? Math.round((reposted / total) * 100) : 0;
+
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-reposted').textContent = reposted;
+            document.getElementById('stat-engagement').textContent = engagement + '%';
+        }
+
+        // Export data
+        function exportData() {
+            if (participants.length === 0) {
+                alert('Não há dados para exportar!');
+                return;
+            }
+
+            const headers = ['Nome', 'WhatsApp', 'Instagram', 'Republicou', 'Data'];
+            const csvContent = [
+                headers.join(','),
+                ...participants.map(p => [
+                    `"${p.name}"`,
+                    p.phone,
+                    p.instagram,
+                    p.reposted ? 'Sim' : 'Não',
+                    new Date(p.date).toLocaleDateString('pt-BR')
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+
+            link.setAttribute('href', url);
+            link.setAttribute('download', `participantes_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast('Dados exportados!');
+        }
+
+        // Helper functions
+        function formatPhone(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length > 11) value = value.substring(0, 11);
+            
+            if (value.length > 10) {
+                value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+            } else if (value.length > 6) {
+                value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+            } else if (value.length > 2) {
+                value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+            } else if (value.length > 0) {
+                value = value.replace(/^(\d*)/, '($1');
+            }
+            
+            e.target.value = value;
+        }
+
+        function formatPhoneDisplay(phone) {
+            return formatPhoneDisplayValue(phone);
+        }
+
+        function formatPhoneDisplayValue(value) {
+            const nums = value.replace(/\D/g, '');
+            if (nums.length === 11) {
+                return `(${nums.substring(0,2)}) ${nums.substring(2,7)}-${nums.substring(7)}`;
+            }
+            return value;
+        }
+
+        function formatInstagram(e) {
+            let value = e.target.value.trim();
+            if (value && !value.startsWith('@')) {
+                e.target.value = '@' + value;
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('participant-form').reset();
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('promotion_participants', JSON.stringify(participants));
+        }
+
+        function showToast(message) {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--accent);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 12px;
+                font-weight: 500;
+                z-index: 3000;
+                animation: fadeIn 0.3s ease-out;
+                box-shadow: var(--shadow);
+            `;
+
+            document.body.appendChild(toast);
+
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Add fadeOut animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateX(-50%) translateY(0); }
+                to { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
